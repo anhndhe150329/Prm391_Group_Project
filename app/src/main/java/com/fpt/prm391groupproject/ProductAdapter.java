@@ -33,7 +33,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-        holder.imv.setImageResource(products.get(position).getId_image());
+        holder.imv.setImageResource(R.drawable.android_image_1);
         holder.tv_name.setText(products.get(position).getProductName());
         holder.tv_price.setText("$ "+products.get(position).getPrice());
     }
