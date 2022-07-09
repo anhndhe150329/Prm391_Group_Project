@@ -7,7 +7,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.fpt.prm391groupproject.DAO.ProductDAO;
 import com.fpt.prm391groupproject.model.Product;
@@ -45,8 +49,25 @@ public class HomeActivity extends AppCompatActivity {
         getListProduct();
     }
 
-    public void onClickViewBtn(android.view.View v){
-        getListProduct();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.home_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.cartItem:
+                Toast.makeText(this,"menuItemCart context Click", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.searchItem:
+                Toast.makeText(this,"menuItemSearch context click", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void getListProduct(){
@@ -56,7 +77,6 @@ public class HomeActivity extends AppCompatActivity {
     private class GetAllProductsOnCompleteListener implements OnCompleteListener<QuerySnapshot> {
         @Override
         public void onComplete(@NonNull Task<QuerySnapshot> task) {
-            String dbName = "Product";
             String productName = "ProductName";
             String productPrice = "Price";
             String productQuantity = "Quantity";
