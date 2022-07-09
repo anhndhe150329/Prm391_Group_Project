@@ -29,6 +29,7 @@ public class ProductDAO {
     private final String productName = "ProductName";
     private final String productPrice = "Price";
     private final String productQuantity = "Quantity";
+    private final String productImage = "ImageId";
     private List<Product> products;
     CollectionReference table;
 
@@ -42,6 +43,7 @@ public class ProductDAO {
         product.put(productName, p.getProductName());
         product.put(productPrice, p.getPrice());
         product.put(productQuantity, p.getQuantity());
+        product.put(productImage, p.getId_image());
 
         table.add(product)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -69,42 +71,12 @@ public class ProductDAO {
         documentReference.delete();
     }
 
-//    public List<Product> getProducts(){
-//        this.getListProducts(new GetAllProductsOnCompleteListener());
-//
-//        return products;
-//    }
-//
-//    public void getListProducts(OnCompleteListener<QuerySnapshot> onCompleteListener){
-//        table.get()
-//                .addOnCompleteListener(onCompleteListener );
-//
-//    }
-//
-//    private class GetAllProductsOnCompleteListener implements OnCompleteListener<QuerySnapshot> {
-//        @Override
-//        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//
-//            if (task.isSuccessful()) {
-//                for (QueryDocumentSnapshot document : task.getResult()) {
-////                    add data to list
-//                    Map<String, Object> documentData = document.getData();
-//                    Product p = new Product();
-//                    p.setId(document.getId());
-//                    p.setProductName(documentData.get(productName).toString());
-//                    p.setPrice(Integer.parseInt(documentData.get(productPrice).toString()));
-//                    p.setQuantity(Integer.parseInt(documentData.get(productQuantity).toString()));
-//                    products.add(p);
-//
-//                    Log.d("getProduct", document.getId() + " => " + document.getData());
-//                }
-//
-//
-//            } else {
-//                Log.w("getProduct", "Error getting documents.", task.getException());
-//            }
-//        }
-//    }
+    public void getListProducts(OnCompleteListener<QuerySnapshot> onCompleteListener){
+        table.get()
+                .addOnCompleteListener(onCompleteListener );
+    }
+
+
 //
 //    public Product getProductById(String id){
 //        List<Product> result = new ArrayList<>();

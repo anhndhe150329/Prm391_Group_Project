@@ -5,21 +5,32 @@ public class Product {
     private String productName;
     private int price;
     private int quantity;
+    private int id_image;
 
     public Product() {
     }
 
-    public Product(String id, String productName, int price, int quantity) {
+    public Product(String id, String productName, int price, int quantity, int id_image) {
         this.id = id;
         this.productName = productName;
         this.price = price;
         this.quantity = quantity;
+        this.id_image = id_image;
     }
 
-    public Product( String productName, int price, int quantity) {
+    public Product(String productName, int price, int quantity,  int id_image) {
         this.productName = productName;
         this.price = price;
         this.quantity = quantity;
+        this.id_image = id_image;
+    }
+
+    public int getId_image() {
+        return id_image;
+    }
+
+    public void setId_image(int id_image) {
+        this.id_image = id_image;
     }
 
     public String getId() {
