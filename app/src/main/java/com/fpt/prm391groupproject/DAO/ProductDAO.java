@@ -29,7 +29,7 @@ public class ProductDAO {
     private final String productName = "ProductName";
     private final String productPrice = "Price";
     private final String productQuantity = "Quantity";
-    private final String productImage = "ImageId";
+    private final String productImage = "Image";
     private List<Product> products;
     CollectionReference table;
 
@@ -43,7 +43,7 @@ public class ProductDAO {
         product.put(productName, p.getProductName());
         product.put(productPrice, p.getPrice());
         product.put(productQuantity, p.getQuantity());
-        product.put(productImage, p.getId_image());
+        product.put(productImage, p.getImage());
 
         table.add(product)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
