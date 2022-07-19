@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -44,6 +45,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private int currentFragment = FRAGMENT_HOME;
 
+    private int isLogin;
+
     private DrawerLayout drawerLayout;
 
     @Override
@@ -52,6 +55,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         setContentView(R.layout.activity_home);
 
+        Intent intent = getIntent();
+        Bundle bundle = intent.getBundleExtra("data");
+        if (bundle!=null){
+            isLogin = bundle.getInt("isLogin");
+        }
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -62,6 +70,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        if (isLogin==1){
+            navigationView.getMenu().findItem(R.id.nav_login).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_change_pass).setVisible(true);
+            navigationView.getMenu().findItem(R.id.nav_logout).setVisible(true);
+        }else {
+            navigationView.getMenu().findItem(R.id.nav_login).setVisible(true);
+            navigationView.getMenu().findItem(R.id.nav_change_pass).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_logout).setVisible(false);
+        }
 
         replaceFragment(new HomeFragment());
         navigationView.getMenu().findItem(R.id.nav_home).setChecked(true);
@@ -90,7 +108,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(new Intent(getApplicationContext(),LoginActivity.class));
                 break;
             case R.id.nav_logout:
-
+                logout();
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -112,11 +130,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         transaction.commit();
     }
 
-    public void logout(View view) {
+    public void logout() {
         FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+        isLogin = 0;
+        NavigationView navigationView = findViewById(R.id.navigation_view);
+        navigationView.getMenu().findItem(R.id.nav_login).setVisible(true);
+        navigationView.getMenu().findItem(R.id.nav_logout).setVisible(false);
+        navigationView.getMenu().findItem(R.id.nav_change_pass).setVisible(false);
         finish();
     }
-
-
 }
