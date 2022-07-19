@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,7 +34,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-        holder.imv.setImageResource(products.get(position).getId_image());
+        int imgId = context.getResources().getIdentifier(products.get(position).getImage(), "drawable", context.getPackageName());
+        holder.imv.setImageResource(imgId);
         holder.tv_name.setText(products.get(position).getProductName());
         holder.tv_price.setText("$ "+products.get(position).getPrice());
     }
@@ -55,6 +57,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             tv_name = itemView.findViewById(R.id.tv_product_name);
             tv_price = itemView.findViewById(R.id.tv_product_price);
             btn_add =  itemView.findViewById(R.id.btn_add_to_cart);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(view.getContext(),"Clicked on: "+(getAdapterPosition()+1),Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 }
