@@ -42,11 +42,4 @@
         app:headerLayout="@layout/layout_header_navigation"
         app:menu="@menu/menu_navigation"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycle_view_home"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1000dp"
-        />
-
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -43,20 +43,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private DrawerLayout drawerLayout;
 
-    private RecyclerView productRecycleView;
-    private ProductAdapter adapter;
-    private List<Product> products;
-
-    ProductDAO dao;
-
-    private void bindingView() {
-        productRecycleView = findViewById(R.id.recycle_view_home);
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dao = new ProductDAO();
+
         setContentView(R.layout.activity_home);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -73,16 +63,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         replaceFragment(new HomeFragment());
         navigationView.getMenu().findItem(R.id.nav_home).setChecked(true);
 
-        bindingView();
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false);
-        productRecycleView.setLayoutManager(gridLayoutManager);
-        productRecycleView.setHasFixedSize(true);
-        getListProduct();
     }
 
-    private void getListProduct(){
-        dao.getListProducts(new GetAllProductsOnCompleteListener());
-    }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -96,12 +79,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_profile:
                 if (currentFragment != FRAGMENT_PROFILE){
-                    replaceFragment(new ProfileFragment());
+                    replaceFragment(new ProfileFragment("come from home fragment"));
                     currentFragment = FRAGMENT_PROFILE;
                 }
+
                 break;
         }
-
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -121,34 +104,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         transaction.commit();
     }
 
-    private class GetAllProductsOnCompleteListener implements OnCompleteListener<QuerySnapshot> {
-        @Override
-        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-            String productName = "ProductName";
-            String productPrice = "Price";
-            String productQuantity = "Quantity";
-            String productImage = "Image";
-            if (task.isSuccessful()) {
-                products = new ArrayList<>();
-                for (QueryDocumentSnapshot document : task.getResult()) {
-//                    add data to list
-                    Map<String, Object> documentData = document.getData();
-                    Product p = new Product();
-                    p.setId(document.getId());
-                    p.setProductName(documentData.get(productName).toString());
-                    p.setPrice(Integer.parseInt(documentData.get(productPrice).toString()));
-                    p.setQuantity(Integer.parseInt(documentData.get(productQuantity).toString()));
-                    p.setImage(documentData.get(productImage).toString());
-                    products.add(p);
 
-                    Log.d("getProduct", document.getId() + " => " + document.getData());
-                }
-                adapter = new ProductAdapter(products, HomeActivity.this);
-                productRecycleView.setAdapter(adapter);
-            } else {
-                Log.w("getProduct", "Error getting documents.", task.getException());
-            }
-        }
-    }
 
 }
