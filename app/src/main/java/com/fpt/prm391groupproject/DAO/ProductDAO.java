@@ -41,6 +41,9 @@ public class ProductDAO {
         product.put(Constants.FireBaseProductTable.productPrice, p.getPrice());
         product.put(Constants.FireBaseProductTable.productQuantity, p.getQuantity());
         product.put(Constants.FireBaseProductTable.productImage, p.getImage());
+        product.put(Constants.FireBaseProductTable.productCategory,p.getCategoryName());
+        product.put(Constants.FireBaseProductTable.productDescription,p.getDescription());
+        product.put(Constants.FireBaseProductTable.productFavourite,p.isFavourite());
 
         table.add(product)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
