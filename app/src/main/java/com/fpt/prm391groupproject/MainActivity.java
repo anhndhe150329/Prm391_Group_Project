@@ -43,11 +43,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         bindingView();
 
-        Product chap1 = new Product("Laptop 1",15,2,0);
-        Product chap2 = new Product("Laptop 2",22,3,0);
-        Product chap3 = new Product("Laptop 3",12,4,0);
-        Product chap4 = new Product("Laptop 4",34,3,0);
-        Product chap5 = new Product("Laptop 5",11,5,0);
+        Product chap1 = new Product("Laptop 1",15,2,"");
+        Product chap2 = new Product("Laptop 2",22,3,"");
+        Product chap3 = new Product("Laptop 3",12,4,"");
+        Product chap4 = new Product("Laptop 4",34,3,"");
+        Product chap5 = new Product("Laptop 5",11,5,"");
         products.add(chap1);
         products.add(chap2);
         products.add(chap3);
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickAddBtn(android.view.View v){
-        Product p = new Product("Laptop x",250,30,0);
+        Product p = new Product("Laptop x",250,30,"");
         dao.addProduct(p);
         products.add(p);
     }
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
             String productName = "ProductName";
             String productPrice = "Price";
             String productQuantity = "Quantity";
-            String productImage = "ImageId";
+            String productImage = "Image";
             if (task.isSuccessful()) {
                 List<Product> listProduct = new ArrayList<>();
                 for (QueryDocumentSnapshot document : task.getResult()) {
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                     p.setProductName(documentData.get(productName).toString());
                     p.setPrice(Integer.parseInt(documentData.get(productPrice).toString()));
                     p.setQuantity(Integer.parseInt(documentData.get(productQuantity).toString()));
-                    p.setId_image(Integer.parseInt(documentData.get(productImage).toString()));
+                    p.setImage(documentData.get(productImage).toString());
                     listProduct.add(p);
 
                     Log.d("getProduct", document.getId() + " => " + document.getData());

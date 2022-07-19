@@ -80,7 +80,7 @@ public class HomeActivity extends AppCompatActivity {
             String productName = "ProductName";
             String productPrice = "Price";
             String productQuantity = "Quantity";
-            String productImage = "ImageId";
+            String productImage = "Image";
             if (task.isSuccessful()) {
                 products = new ArrayList<>();
                 for (QueryDocumentSnapshot document : task.getResult()) {
@@ -91,7 +91,7 @@ public class HomeActivity extends AppCompatActivity {
                     p.setProductName(documentData.get(productName).toString());
                     p.setPrice(Integer.parseInt(documentData.get(productPrice).toString()));
                     p.setQuantity(Integer.parseInt(documentData.get(productQuantity).toString()));
-                    p.setId_image(Integer.parseInt(documentData.get(productImage).toString()));
+                    p.setImage(documentData.get(productImage).toString());
                     products.add(p);
 
                     Log.d("getProduct", document.getId() + " => " + document.getData());
