@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fpt.prm391groupproject.fragment.ProductFragment;
 import com.fpt.prm391groupproject.fragment.ProfileFragment;
 import com.fpt.prm391groupproject.model.Product;
 
@@ -82,7 +83,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(view.getContext(),"Clicked on: "+(getAdapterPosition()+1),Toast.LENGTH_SHORT).show();
+                    String id =products.get(getAdapterPosition()).getId();
+
+                    FragmentTransaction transaction = fragmentActivity.getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.content_frame,new ProductFragment(id));
+                    transaction.commit();
+
+//                    Toast.makeText(view.getContext(),"Clicked on: "+(getAdapterPosition()+1),Toast.LENGTH_SHORT).show();
                 }
             });
         }

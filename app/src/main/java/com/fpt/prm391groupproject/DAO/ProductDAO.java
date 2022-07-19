@@ -75,4 +75,10 @@ public class ProductDAO {
         table.get()
                 .addOnCompleteListener(onCompleteListener );
     }
+
+    public void getProductById(OnCompleteListener<DocumentSnapshot> onCompleteListener, String id){
+        table.document(id)
+                .get()
+                .addOnCompleteListener(onCompleteListener);
+    }
 }
