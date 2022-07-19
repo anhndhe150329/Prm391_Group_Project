@@ -12,11 +12,13 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -26,6 +28,7 @@ import com.fpt.prm391groupproject.fragment.ProfileFragment;
 import com.fpt.prm391groupproject.model.Product;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -82,6 +85,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     replaceFragment(new ProfileFragment("come from home fragment"));
                     currentFragment = FRAGMENT_PROFILE;
                 }
+                break;
+            case  R.id.nav_login:
+                startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+                break;
+            case R.id.nav_logout:
 
                 break;
         }
@@ -104,6 +112,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         transaction.commit();
     }
 
+    public void logout(View view) {
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+        finish();
+    }
 
 
 }
