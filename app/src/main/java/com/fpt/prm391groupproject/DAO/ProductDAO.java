@@ -3,6 +3,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.fpt.prm391groupproject.Utils.Constants;
 import com.fpt.prm391groupproject.model.Product;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -25,25 +26,21 @@ import java.util.List;
 import java.util.Map;
 
 public class ProductDAO {
-    private final String dbName = "Product";
-    private final String productName = "ProductName";
-    private final String productPrice = "Price";
-    private final String productQuantity = "Quantity";
-    private final String productImage = "Image";
+
     private List<Product> products;
     CollectionReference table;
 
     public ProductDAO() {
-        table = FirebaseFirestore.getInstance().collection(dbName);
+        table = FirebaseFirestore.getInstance().collection(Constants.FireBaseProductTable.dbName);
         products = new ArrayList<>();
     }
 
     public void addProduct(Product p){
         Map<String, Object> product = new HashMap<>();
-        product.put(productName, p.getProductName());
-        product.put(productPrice, p.getPrice());
-        product.put(productQuantity, p.getQuantity());
-        product.put(productImage, p.getImage());
+        product.put(Constants.FireBaseProductTable.productName, p.getProductName());
+        product.put(Constants.FireBaseProductTable.productPrice, p.getPrice());
+        product.put(Constants.FireBaseProductTable.productQuantity, p.getQuantity());
+        product.put(Constants.FireBaseProductTable.productImage, p.getImage());
 
         table.add(product)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -75,39 +72,4 @@ public class ProductDAO {
         table.get()
                 .addOnCompleteListener(onCompleteListener );
     }
-
-
-//
-//    public Product getProductById(String id){
-//        List<Product> result = new ArrayList<>();
-//        DocumentReference docRef = table.document(id);
-//// Source can be CACHE, SERVER, or DEFAULT.
-//        Source source = Source.CACHE;
-//
-//// Get the document, forcing the SDK to use the offline cache
-//        docRef.get(source).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    // Document found in the offline cache
-//                    DocumentSnapshot document = task.getResult();
-//                    Map<String, Object> documentData = document.getData();
-//                    Product p = new Product();
-//                    p.setId(document.getId());
-//                    p.setProductName(documentData.get(productName).toString());
-//                    p.setPrice(Integer.parseInt(documentData.get(productPrice).toString()));
-//                    p.setQuantity(Integer.parseInt(documentData.get(productQuantity).toString()));
-//                    result.add(p);
-//                    Log.d("getProduct", "Cached document data: " + document.getData());
-//                } else {
-//                    Log.d("getProduct", "Cached get failed: ", task.getException());
-//                }
-//            }
-//        });
-//
-//        return result.size()==1 ? result.get(0):null;
-//    }
-
-
-
 }
