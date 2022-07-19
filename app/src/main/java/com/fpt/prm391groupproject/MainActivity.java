@@ -54,13 +54,13 @@ public class MainActivity extends AppCompatActivity {
         products.add(chap4);
         products.add(chap5);
 
-        adapter = new ProductAdapter(products, MainActivity.this);
-
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false);
-        productRecycleView.setLayoutManager(gridLayoutManager);
-        productRecycleView.setHasFixedSize(true);
-
-        productRecycleView.setAdapter(adapter);
+//        adapter = new ProductAdapter(products, MainActivity.this);
+//
+//        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false);
+//        productRecycleView.setLayoutManager(gridLayoutManager);
+//        productRecycleView.setHasFixedSize(true);
+//
+//        productRecycleView.setAdapter(adapter);
 
     }
 
@@ -107,8 +107,8 @@ public class MainActivity extends AppCompatActivity {
 
                     Log.d("getProduct", document.getId() + " => " + document.getData());
                 }
-                adapter = new ProductAdapter(listProduct, MainActivity.this);
-                productRecycleView.setAdapter(adapter);
+//                adapter = new ProductAdapter(listProduct, MainActivity.this);
+//                productRecycleView.setAdapter(adapter);
             } else {
                 Log.w("getProduct", "Error getting documents.", task.getException());
             }

@@ -7,5 +7,13 @@
     <string name="product_quantity">Quantity</string>
     <string name="product_image_id">ImageId</string>
 
+    <string name="navi_home">Home</string>
+    <string name="navi_profile">Profile</string>
+    <string name="navi_login">Login</string>
+    <string name="navi_Logout">Logout</string>
+    <string name="navi_cart">Cart</string>
+    <string name="navi_change_pass">Change Password</string>
 
+    <string name="navi_drawer_open">Open navigation drawer</string>
+    <string name="navi_drawer_close">Close navigation drawer</string>
 </resources>
