@@ -16,6 +16,7 @@ import com.fpt.prm391groupproject.DAO.ProductDAO;
 import com.fpt.prm391groupproject.HomeActivity;
 import com.fpt.prm391groupproject.ProductAdapter;
 import com.fpt.prm391groupproject.R;
+import com.fpt.prm391groupproject.Utils.Constants;
 import com.fpt.prm391groupproject.model.Product;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -61,10 +62,6 @@ public class HomeFragment extends Fragment {
     private class GetAllProductsOnCompleteListener implements OnCompleteListener<QuerySnapshot> {
         @Override
         public void onComplete(@NonNull Task<QuerySnapshot> task) {
-            String productName = "ProductName";
-            String productPrice = "Price";
-            String productQuantity = "Quantity";
-            String productImage = "Image";
             if (task.isSuccessful()) {
                 products = new ArrayList<>();
                 for (QueryDocumentSnapshot document : task.getResult()) {
@@ -72,10 +69,10 @@ public class HomeFragment extends Fragment {
                     Map<String, Object> documentData = document.getData();
                     Product p = new Product();
                     p.setId(document.getId());
-                    p.setProductName(documentData.get(productName).toString());
-                    p.setPrice(Integer.parseInt(documentData.get(productPrice).toString()));
-                    p.setQuantity(Integer.parseInt(documentData.get(productQuantity).toString()));
-                    p.setImage(documentData.get(productImage).toString());
+                    p.setProductName(documentData.get(Constants.FireBaseProductTable.productName).toString());
+                    p.setPrice(Integer.parseInt(documentData.get(Constants.FireBaseProductTable.productPrice).toString()));
+                    p.setQuantity(Integer.parseInt(documentData.get(Constants.FireBaseProductTable.productQuantity).toString()));
+                    p.setImage(documentData.get(Constants.FireBaseProductTable.productImage).toString());
                     products.add(p);
 
                     Log.d("getProduct", document.getId() + " => " + document.getData());
