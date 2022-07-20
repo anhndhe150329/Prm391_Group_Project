@@ -1,7 +1,6 @@
 package com.fpt.prm391groupproject.model;
 
 public class User {
-    private String id;
     private String userId;
     private String email;
     private String name;
@@ -12,8 +11,7 @@ public class User {
     public User() {
     }
 
-    public User(String id, String userId, String email, String name, String phone, String address, int age) {
-        this.id = id;
+    public User(String userId, String email, String name, String phone, String address, int age) {
         this.userId = userId;
         this.email = email;
         this.name = name;
@@ -22,13 +20,6 @@ public class User {
         this.age = age;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getUserId() {
         return userId;
