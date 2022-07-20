@@ -6,23 +6,45 @@ public class Product {
     private int price;
     private int quantity;
     private String image;
+    private String categoryName;
+    private String description;
+    private boolean favourite;
 
     public Product() {
     }
 
-    public Product(String id, String productName, int price, int quantity, String image) {
-        this.id = id;
+    public Product(String productName, int price, int quantity, String image, String categoryName, String description, boolean favourite) {
         this.productName = productName;
         this.price = price;
         this.quantity = quantity;
         this.image = image;
+        this.categoryName = categoryName;
+        this.description = description;
+        this.favourite = favourite;
     }
 
-    public Product(String productName, int price, int quantity,  String image) {
-        this.productName = productName;
-        this.price = price;
-        this.quantity = quantity;
-        this.image = image;
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public boolean isFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        this.favourite = favourite;
     }
 
     public String getImage() {
