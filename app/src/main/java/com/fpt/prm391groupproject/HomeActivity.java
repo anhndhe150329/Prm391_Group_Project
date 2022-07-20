@@ -42,6 +42,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private static final int FRAGMENT_HOME = 0;
     private static final int FRAGMENT_PROFILE = 1;
+    private static final int FRAGMENT_CART = 2;
+    private static final int FRAGMENT_WALLET = 3;
 
     private int currentFragment = FRAGMENT_HOME;
 
@@ -86,8 +88,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -103,6 +103,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     replaceFragment(new ProfileFragment("come from home fragment"));
                     currentFragment = FRAGMENT_PROFILE;
                 }
+                break;
+            case R.id.nav_cart:
+                if (currentFragment != FRAGMENT_CART){
+                    currentFragment = FRAGMENT_CART;
+                }
+                break;
+            case R.id.nav_wallet:
+                if (currentFragment != FRAGMENT_WALLET){
+                    currentFragment = FRAGMENT_WALLET;
+                }
+                break;
+            case R.id.nav_change_pass:
                 break;
             case  R.id.nav_login:
                 startActivity(new Intent(getApplicationContext(),LoginActivity.class));

@@ -68,7 +68,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             btn_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     String id =products.get(getAdapterPosition()).getId();
 
                     Toast.makeText(view.getContext(),id,Toast.LENGTH_SHORT).show();
@@ -76,6 +75,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                     FragmentTransaction transaction = fragmentActivity.getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.content_frame,new ProfileFragment(id));
                     transaction.commit();
+
 
                 }
             });
