@@ -27,7 +27,9 @@ import android.widget.Toast;
 
 import com.fpt.prm391groupproject.DAO.ProductDAO;
 import com.fpt.prm391groupproject.DAO.UserSQLiteDAO;
+import com.fpt.prm391groupproject.fragment.CartFragment;
 import com.fpt.prm391groupproject.fragment.HomeFragment;
+import com.fpt.prm391groupproject.fragment.OrderFragment;
 import com.fpt.prm391groupproject.fragment.ProfileFragment;
 import com.fpt.prm391groupproject.model.Product;
 import com.fpt.prm391groupproject.model.User;
@@ -120,16 +122,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             case R.id.nav_cart:
-                checkIdLogin();
-                if (currentFragment != FRAGMENT_CART){
-                    //replaceFragment(new CartFragment());
+
+                if (checkIdLogin() && currentFragment != FRAGMENT_CART ){
+                    replaceFragment(new CartFragment());
                     currentFragment = FRAGMENT_CART;
                 }
                 break;
             case R.id.nav_history:
                 checkIdLogin();
                 if (currentFragment != FRAGMENT_HISTORY){
-                    //replaceFragment(new HistoryFragment());
+                    replaceFragment(new OrderFragment());
                     currentFragment = FRAGMENT_HISTORY;
                 }
                 break;
@@ -198,11 +200,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         navigationView.getMenu().findItem(R.id.nav_change_pass).setVisible(false);
     }
 
-    public void checkIdLogin(){
+    public boolean checkIdLogin(){
         if (auth.getCurrentUser()==null){
             Intent intent = new Intent(this,LoginActivity.class);
             startActivity(intent);
+            return false;
         }
+        return true;
     }
 
 }

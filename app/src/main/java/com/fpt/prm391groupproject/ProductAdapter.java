@@ -16,9 +16,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fpt.prm391groupproject.DAO.CartDAO;
 import com.fpt.prm391groupproject.fragment.ProductFragment;
 import com.fpt.prm391groupproject.fragment.ProfileFragment;
+import com.fpt.prm391groupproject.model.Cart;
 import com.fpt.prm391groupproject.model.Product;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -26,6 +29,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     private List<Product> products;
     private Context context;
     private FragmentActivity fragmentActivity;
+    private FirebaseAuth auth;
 
     public ProductAdapter(List<Product> products, FragmentActivity fragmentActivity) {
         this.products = products;
@@ -36,6 +40,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
+        auth = FirebaseAuth.getInstance();
         View v = LayoutInflater.from(context).inflate(R.layout.item_product, parent, false);
         return new ProductViewHolder(v);
     }
@@ -69,14 +74,19 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 @Override
                 public void onClick(View view) {
                     String id =products.get(getAdapterPosition()).getId();
-
-                    Toast.makeText(view.getContext(),id,Toast.LENGTH_SHORT).show();
-
-                    FragmentTransaction transaction = fragmentActivity.getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.content_frame,new ProfileFragment(id));
-                    transaction.commit();
-
-
+                    CartDAO cd = new CartDAO(view.getContext());
+                    Cart c = new Cart();
+                    c.setProductId(id);
+                    c.setUserId(auth.getCurrentUser().getUid());
+                    c.setProductName(products.get(getAdapterPosition()).getProductName());
+                    c.setImage(products.get(getAdapterPosition()).getImage());
+                    c.setPrice(products.get(getAdapterPosition()).getPrice());
+                    c.setQuantity(1);
+                    if(cd.GetById(c.getUserId(),c.getProductId())==null){
+                        cd.addToCart(c);
+                    }else {
+                        cd.updateCart(c);
+                    }
                 }
             });
 
