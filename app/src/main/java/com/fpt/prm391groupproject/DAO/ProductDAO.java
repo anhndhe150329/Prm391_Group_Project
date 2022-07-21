@@ -81,7 +81,6 @@ public class ProductDAO {
                     .get()
                     .addOnCompleteListener(onCompleteListener );
         }
-
     }
 
     public void getListProducts(OnCompleteListener<QuerySnapshot> onCompleteListener){

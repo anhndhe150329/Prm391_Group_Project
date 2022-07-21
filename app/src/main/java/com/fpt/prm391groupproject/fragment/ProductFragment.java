@@ -41,6 +41,8 @@ public class ProductFragment extends Fragment {
     Button bt_btn_cart;
     View view;
 
+    private String image;
+
     FirebaseAuth auth;
     Product thisProduct;
 
@@ -75,8 +77,8 @@ public class ProductFragment extends Fragment {
                 c.setProductId(id);
                 c.setUserId(auth.getCurrentUser().getUid());
                 c.setProductName(tv_p_name.getText().toString());
-//                c.setImage(products.get(getAdapterPosition()).getImage());
-//                c.setPrice(products.get(getAdapterPosition()).getPrice());
+                c.setImage(image);
+                c.setPrice(Integer.parseInt(tv_p_price.getText().toString()));
                 c.setQuantity(1);
                 if(cd.GetById(c.getUserId(),c.getProductId())==null){
                     cd.addToCart(c);
@@ -95,7 +97,8 @@ public class ProductFragment extends Fragment {
         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
             if (task.isSuccessful()) {
                 DocumentSnapshot documentSnapshot = task.getResult();
-                int imgId = getContext().getResources().getIdentifier(documentSnapshot.getString(Constants.FireBaseProductTable.productImage), "drawable", getContext().getPackageName());
+                image = documentSnapshot.getString(Constants.FireBaseProductTable.productImage);
+                int imgId = getContext().getResources().getIdentifier(image, "drawable", getContext().getPackageName());
                 iv_img_p.setImageResource(imgId);
                 tv_p_name.setText(documentSnapshot.getString(Constants.FireBaseProductTable.productName));
                 tv_p_cat.setText(documentSnapshot.getString(Constants.FireBaseProductTable.productCategory));
