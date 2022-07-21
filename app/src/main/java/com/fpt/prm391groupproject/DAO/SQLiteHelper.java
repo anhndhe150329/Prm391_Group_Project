@@ -16,6 +16,15 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             Constants.SQLiteCategoryTable.name + " TEXT NOT NULL" +
             ")";
 
+    String CREATE_USER_TABLE = "CREATE TABLE "+ Constants.SQLiteUserTable.tableName + "("
+             + Constants.SQLiteUserTable.userId +" TEXT PRIMARY KEY NOT NULL, " +
+            Constants.SQLiteUserTable.name +" TEXT, " +
+            Constants.SQLiteUserTable.email +" TEXT, " +
+            Constants.SQLiteUserTable.phone +" TEXT, " +
+            Constants.SQLiteUserTable.address +" TEXT, " +
+            Constants.SQLiteUserTable.age +" INTEGER " +
+            ")";
+
     public static int VERSION = 1;
     public SQLiteHelper(@Nullable Context context,
                         @Nullable SQLiteDatabase.CursorFactory factory) {
@@ -29,6 +38,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 Constants.SQLiteCategoryTable.name + " TEXT NOT NULL" +
                 ")";
         sqLiteDatabase.execSQL(CREATE_CATEGORY_TABLE);
+        sqLiteDatabase.execSQL(CREATE_USER_TABLE);
     }
 
     @Override
@@ -37,6 +47,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             String DROP_TABLE = "DROP TABLE if EXISTS category1";
             sqLiteDatabase.execSQL(DROP_TABLE);
             sqLiteDatabase.execSQL(CREATE_TABLE);
+            sqLiteDatabase.execSQL(CREATE_USER_TABLE);
         }
     }
 }

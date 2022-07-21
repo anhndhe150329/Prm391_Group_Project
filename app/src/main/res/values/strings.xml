@@ -12,6 +12,7 @@
     <string name="navi_login">Login</string>
     <string name="navi_Logout">Logout</string>
     <string name="navi_cart">Cart</string>
+    <string name="navi_history">History</string>
     <string name="navi_wallet">Wallet</string>
     <string name="navi_change_pass">Change Password</string>
 
