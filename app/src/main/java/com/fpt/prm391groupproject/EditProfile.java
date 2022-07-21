@@ -61,7 +61,6 @@ public class EditProfile extends AppCompatActivity {
         txtPhone.setText(phone);
         txtEmail.setText(email);
 
-
         btnChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,6 +69,8 @@ public class EditProfile extends AppCompatActivity {
                         txtAddress.getText().toString(),Integer.parseInt(txtAge.getText().toString()));
                 userDAO.updateUser(user);
                 userSQLiteDAO.updateUser(user);
+                Intent intent = new Intent(EditProfile.this,HomeActivity.class);
+                startActivity(intent);
             }
         });
 

@@ -53,7 +53,7 @@ public class UserDAO {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d("TAG", "DocumentSnapshot added with ID: " + documentReference.getId());
-                        userSQLiteDAO.addUser(u);
+                        //userSQLiteDAO.addUser(u);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -77,16 +77,10 @@ public class UserDAO {
                                 docId=document.getId();
                             }
                            table.document(docId).set(p);
-
                         }
                     }
                 });
 
-    }
-
-    public void deleteProduct(String id) {
-        DocumentReference documentReference = table.document(id);
-        documentReference.delete();
     }
 
     public void getLoginUser( String id){
@@ -105,7 +99,7 @@ public class UserDAO {
                                 u.setPhone(documentData.get(Constants.FireBaseUserTable.userPhone).toString());
                                 u.setAddress(documentData.get(Constants.FireBaseUserTable.userAddress).toString());
                                 u.setAge(Integer.parseInt(documentData.get(Constants.FireBaseUserTable.userAge).toString()));
-
+                                userSQLiteDAO.addUser(u);
                             }
                         }
                     }
