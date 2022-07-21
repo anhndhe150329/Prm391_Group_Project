@@ -45,10 +45,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private static final int FRAGMENT_PROFILE = 1;
     private static final int FRAGMENT_CART = 2;
     private static final int FRAGMENT_WALLET = 3;
+    private static final int FRAGMENT_PRODUCT = 4;
 
     private int currentFragment = FRAGMENT_HOME;
-
-    private int isLogin;
 
     private FirebaseAuth auth;
 
@@ -108,11 +107,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             case R.id.nav_cart:
+                checkIdLogin();
+
                 if (currentFragment != FRAGMENT_CART){
                     currentFragment = FRAGMENT_CART;
                 }
                 break;
             case R.id.nav_wallet:
+                checkIdLogin();
+
                 if (currentFragment != FRAGMENT_WALLET){
                     currentFragment = FRAGMENT_WALLET;
                 }
@@ -146,8 +149,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void logout() {
-        FirebaseAuth.getInstance().signOut();
-        isLogin = 0;
+        auth.signOut();
+
         NavigationView navigationView = findViewById(R.id.navigation_view);
         navigationView.getMenu().findItem(R.id.nav_profile).setVisible(false);
         navigationView.getMenu().findItem(R.id.nav_login).setVisible(true);
@@ -155,4 +158,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         navigationView.getMenu().findItem(R.id.nav_change_pass).setVisible(false);
         finish();
     }
+
+    public void checkIdLogin(){
+        if (auth.getCurrentUser()==null){
+            Intent intent = new Intent(this,LoginActivity.class);
+            startActivity(intent);
+        }
+    }
+
 }
