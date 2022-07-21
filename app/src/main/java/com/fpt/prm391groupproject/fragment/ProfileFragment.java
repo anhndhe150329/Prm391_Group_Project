@@ -10,11 +10,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.fpt.prm391groupproject.DAO.UserSQLiteDAO;
 import com.fpt.prm391groupproject.R;
+import com.fpt.prm391groupproject.model.User;
 
 public class ProfileFragment extends Fragment {
     TextView textView;
     private String id;
+
+    private UserSQLiteDAO userSQLiteDAO;
 
     public ProfileFragment(String id) {
         this.id = id;
@@ -24,8 +28,8 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile,container,false);
-        textView = view.findViewById(R.id.test_text);
-        textView.setText(id);
+        userSQLiteDAO = new UserSQLiteDAO(container.getContext());
+        User user = userSQLiteDAO.getUserById(id);
         return view;
     }
 }

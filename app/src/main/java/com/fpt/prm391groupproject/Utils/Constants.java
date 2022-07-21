@@ -23,6 +23,16 @@ public class Constants {
         public static final String userAge = "Age";
     }
 
+    public static class SQLiteUserTable{
+        public static final String tableName = "User";
+        public static final String userId = "userId";
+        public static final String email = "email";
+        public static final String name = "name";
+        public static final String phone = "phone";
+        public static final String address = "address";
+        public static final String age = "age";
+    }
+
     public static class SQLiteCategoryTable{
         public static final String tableName = "Category";
         public static final String id = "id";

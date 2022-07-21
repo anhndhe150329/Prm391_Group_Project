@@ -31,6 +31,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -44,10 +45,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private static final int FRAGMENT_PROFILE = 1;
     private static final int FRAGMENT_CART = 2;
     private static final int FRAGMENT_WALLET = 3;
+    private static final int FRAGMENT_PRODUCT = 4;
 
     private int currentFragment = FRAGMENT_HOME;
 
-    private int isLogin;
+    private FirebaseAuth auth;
 
     private DrawerLayout drawerLayout;
 
@@ -57,11 +59,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         setContentView(R.layout.activity_home);
 
-        Intent intent = getIntent();
-        Bundle bundle = intent.getBundleExtra("data");
-        if (bundle!=null){
-            isLogin = bundle.getInt("isLogin");
-        }
+        auth = FirebaseAuth.getInstance();
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -73,11 +72,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        if (isLogin==1){
+        if (auth.getCurrentUser()!=null){
+            navigationView.getMenu().findItem(R.id.nav_profile).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_login).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_change_pass).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_logout).setVisible(true);
         }else {
+            navigationView.getMenu().findItem(R.id.nav_profile).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_login).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_change_pass).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_logout).setVisible(false);
@@ -100,16 +101,21 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_profile:
                 if (currentFragment != FRAGMENT_PROFILE){
-                    replaceFragment(new ProfileFragment("come from home fragment"));
+                    String currentID = auth.getCurrentUser().getUid();
+                    replaceFragment(new ProfileFragment(currentID));
                     currentFragment = FRAGMENT_PROFILE;
                 }
                 break;
             case R.id.nav_cart:
+                checkIdLogin();
+
                 if (currentFragment != FRAGMENT_CART){
                     currentFragment = FRAGMENT_CART;
                 }
                 break;
             case R.id.nav_wallet:
+                checkIdLogin();
+
                 if (currentFragment != FRAGMENT_WALLET){
                     currentFragment = FRAGMENT_WALLET;
                 }
@@ -143,12 +149,21 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void logout() {
-        FirebaseAuth.getInstance().signOut();
-        isLogin = 0;
+        auth.signOut();
+
         NavigationView navigationView = findViewById(R.id.navigation_view);
+        navigationView.getMenu().findItem(R.id.nav_profile).setVisible(false);
         navigationView.getMenu().findItem(R.id.nav_login).setVisible(true);
         navigationView.getMenu().findItem(R.id.nav_logout).setVisible(false);
         navigationView.getMenu().findItem(R.id.nav_change_pass).setVisible(false);
         finish();
     }
+
+    public void checkIdLogin(){
+        if (auth.getCurrentUser()==null){
+            Intent intent = new Intent(this,LoginActivity.class);
+            startActivity(intent);
+        }
+    }
+
 }

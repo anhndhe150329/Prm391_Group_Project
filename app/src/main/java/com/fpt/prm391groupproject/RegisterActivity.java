@@ -13,7 +13,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fpt.prm391groupproject.DAO.UserDAO;
+import com.fpt.prm391groupproject.DAO.UserSQLiteDAO;
 import com.fpt.prm391groupproject.Utils.Constants;
+import com.fpt.prm391groupproject.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,10 +36,15 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseFirestore firestore;
     private String userId;
+
+    private UserDAO userDAO;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        userDAO = new UserDAO(this);
 
         etName = findViewById(R.id.etName);
         etEmail = findViewById(R.id.etEmail);
@@ -86,27 +94,8 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         String userId = auth.getUid();
                         if (task.isSuccessful()) {
-                            Map<String,Object> user = new HashMap<>();
-                            user.put(Constants.FireBaseUserTable.userName,fullname);
-                            user.put(Constants.FireBaseUserTable.userEmail,email);
-                            user.put(Constants.FireBaseUserTable.userPhone,phone);
-                            user.put(Constants.FireBaseUserTable.userAddress,address);
-                            user.put(Constants.FireBaseUserTable.userAge,age);
-                            user.put(Constants.FireBaseUserTable.userId,userId);
-                            firestore.collection(Constants.FireBaseUserTable.dbName).add(user)
-                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                        @Override
-                                        public void onSuccess(DocumentReference documentReference) {
-                                            Log.w("TAG", "Success adding user with id: "+documentReference.getId());
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.w("TAG", "Error adding document:"+e.toString());
-                                        }
-                                    });
-                            Toast.makeText(RegisterActivity.this, "Success.",
-                                    Toast.LENGTH_SHORT).show();
+                            User u = new User(userId,email,fullname,phone,address,age);
+                            userDAO.addUser(u);
                             Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
                             startActivity(intent);
 
