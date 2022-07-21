@@ -21,16 +21,23 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fpt.prm391groupproject.DAO.ProductDAO;
+import com.fpt.prm391groupproject.DAO.UserSQLiteDAO;
+import com.fpt.prm391groupproject.fragment.CartFragment;
 import com.fpt.prm391groupproject.fragment.HomeFragment;
+import com.fpt.prm391groupproject.fragment.OrderFragment;
 import com.fpt.prm391groupproject.fragment.ProfileFragment;
 import com.fpt.prm391groupproject.model.Product;
+import com.fpt.prm391groupproject.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -43,13 +50,22 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private static final int FRAGMENT_HOME = 0;
     private static final int FRAGMENT_PROFILE = 1;
     private static final int FRAGMENT_CART = 2;
-    private static final int FRAGMENT_WALLET = 3;
+    private static final int FRAGMENT_HISTORY = 3;
+    private static final int FRAGMENT_WALLET = 4;
+    private static final int FRAGMENT_PRODUCT = 5;
 
     private int currentFragment = FRAGMENT_HOME;
 
-    private int isLogin;
+    private FirebaseAuth auth;
 
     private DrawerLayout drawerLayout;
+
+    private UserSQLiteDAO userSQLiteDAO;
+
+    NavigationView navigationView;
+    TextView header_name;
+    TextView header_email;
+    ImageView header_image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +73,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         setContentView(R.layout.activity_home);
 
-        Intent intent = getIntent();
-        Bundle bundle = intent.getBundleExtra("data");
-        if (bundle!=null){
-            isLogin = bundle.getInt("isLogin");
-        }
+        userSQLiteDAO=new UserSQLiteDAO(this);
+
+        auth = FirebaseAuth.getInstance();
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -70,17 +85,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = findViewById(R.id.navigation_view);
+        navigationView = findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        if (isLogin==1){
-            navigationView.getMenu().findItem(R.id.nav_login).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_change_pass).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_logout).setVisible(true);
+        header_name = navigationView.getHeaderView(0).findViewById(R.id.nav_header_name);
+        header_email = navigationView.getHeaderView(0).findViewById(R.id.nav_header_email);
+        header_image = navigationView.getHeaderView(0).findViewById(R.id.nav_header_image);
+
+        if (auth.getCurrentUser()!=null){
+            isLogin();
         }else {
-            navigationView.getMenu().findItem(R.id.nav_login).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_change_pass).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_logout).setVisible(false);
+            isLogout();
         }
 
         replaceFragment(new HomeFragment());
@@ -99,18 +114,31 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             case R.id.nav_profile:
+                checkIdLogin();
                 if (currentFragment != FRAGMENT_PROFILE){
-                    replaceFragment(new ProfileFragment("come from home fragment"));
+                    String currentID = auth.getCurrentUser().getUid();
+                    replaceFragment(new ProfileFragment(currentID));
                     currentFragment = FRAGMENT_PROFILE;
                 }
                 break;
             case R.id.nav_cart:
+                checkIdLogin();
                 if (currentFragment != FRAGMENT_CART){
+                    replaceFragment(new CartFragment());
                     currentFragment = FRAGMENT_CART;
                 }
                 break;
+            case R.id.nav_history:
+                checkIdLogin();
+                if (currentFragment != FRAGMENT_HISTORY){
+                    replaceFragment(new OrderFragment());
+                    currentFragment = FRAGMENT_HISTORY;
+                }
+                break;
             case R.id.nav_wallet:
+                checkIdLogin();
                 if (currentFragment != FRAGMENT_WALLET){
+                    //replaceFragment(new HistoryFragment());
                     currentFragment = FRAGMENT_WALLET;
                 }
                 break;
@@ -143,12 +171,40 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void logout() {
-        FirebaseAuth.getInstance().signOut();
-        isLogin = 0;
-        NavigationView navigationView = findViewById(R.id.navigation_view);
+        auth.signOut();
+//        isLogout();
+//        replaceFragment(new HomeFragment());
+//        currentFragment = FRAGMENT_HOME;
+        Intent intent = new Intent(HomeActivity.this,LoginActivity.class);
+        startActivity(intent);
+    }
+
+    private void isLogin() {
+        User user = userSQLiteDAO.getUserById(auth.getCurrentUser().getUid());
+        header_image.setImageResource(R.drawable.avatar);
+        header_name.setText(user.getName());
+        header_email.setText(user.getEmail());
+        navigationView.getMenu().findItem(R.id.nav_profile).setVisible(true);
+        navigationView.getMenu().findItem(R.id.nav_login).setVisible(false);
+        navigationView.getMenu().findItem(R.id.nav_change_pass).setVisible(true);
+        navigationView.getMenu().findItem(R.id.nav_logout).setVisible(true);
+    }
+
+    public void isLogout(){
+        header_image.setImageResource(R.mipmap.ic_launcher_round);
+        header_name.setText("Laptop Shop");
+        header_email.setText("");
+        navigationView.getMenu().findItem(R.id.nav_profile).setVisible(false);
         navigationView.getMenu().findItem(R.id.nav_login).setVisible(true);
         navigationView.getMenu().findItem(R.id.nav_logout).setVisible(false);
         navigationView.getMenu().findItem(R.id.nav_change_pass).setVisible(false);
-        finish();
     }
+
+    public void checkIdLogin(){
+        if (auth.getCurrentUser()==null){
+            Intent intent = new Intent(this,LoginActivity.class);
+            startActivity(intent);
+        }
+    }
+
 }
