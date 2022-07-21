@@ -108,12 +108,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_cart:
                 checkIdLogin();
+
                 if (currentFragment != FRAGMENT_CART){
                     currentFragment = FRAGMENT_CART;
                 }
                 break;
             case R.id.nav_wallet:
                 checkIdLogin();
+
                 if (currentFragment != FRAGMENT_WALLET){
                     currentFragment = FRAGMENT_WALLET;
                 }
@@ -148,6 +150,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     public void logout() {
         auth.signOut();
+
         NavigationView navigationView = findViewById(R.id.navigation_view);
         navigationView.getMenu().findItem(R.id.nav_profile).setVisible(false);
         navigationView.getMenu().findItem(R.id.nav_login).setVisible(true);

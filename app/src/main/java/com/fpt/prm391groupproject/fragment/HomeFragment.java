@@ -1,7 +1,5 @@
 package com.fpt.prm391groupproject.fragment;
 
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -76,7 +74,6 @@ public class HomeFragment extends Fragment {
         bindingDropDown(view);
         categoryAdapter = new CategoryAdapter(getContext(),R.layout.item_selected,getListCategory());
         spinnerCategory.setAdapter(categoryAdapter);
-
         spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
