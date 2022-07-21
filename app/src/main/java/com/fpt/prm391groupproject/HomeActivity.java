@@ -126,22 +126,19 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             case R.id.nav_cart:
-
                 if (checkIdLogin() && currentFragment != FRAGMENT_CART ){
                     replaceFragment(new CartFragment());
                     currentFragment = FRAGMENT_CART;
                 }
                 break;
             case R.id.nav_history:
-                checkIdLogin();
-                if (currentFragment != FRAGMENT_HISTORY){
+                if ( checkIdLogin() && currentFragment != FRAGMENT_HISTORY){
                     replaceFragment(new OrderFragment());
                     currentFragment = FRAGMENT_HISTORY;
                 }
                 break;
             case R.id.nav_wallet:
-                checkIdLogin();
-                if (currentFragment != FRAGMENT_WALLET){
+                if (checkIdLogin() && currentFragment != FRAGMENT_WALLET){
                     replaceFragment(new WalletFragment());
                     currentFragment = FRAGMENT_WALLET;
                 }
@@ -167,7 +164,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawer(GravityCompat.START);
-        }else {
+        }else if (currentFragment == FRAGMENT_PROFILE || currentFragment == FRAGMENT_CART
+                || currentFragment == FRAGMENT_HISTORY || currentFragment == FRAGMENT_WALLET
+                ||currentFragment == FRAGMENT_HOME){
+            replaceFragment(new HomeFragment());
+            currentFragment = FRAGMENT_HOME;
+            navigationView.getMenu().findItem(R.id.nav_home).setChecked(true);
+        }
+        else {
             super.onBackPressed();
         }
     }

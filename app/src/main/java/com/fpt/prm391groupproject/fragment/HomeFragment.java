@@ -75,7 +75,7 @@ public class HomeFragment extends Fragment {
         productDAO = new ProductDAO();
 
         bindingView(view);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3, GridLayoutManager.VERTICAL, false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
         productRecycleView.setLayoutManager(gridLayoutManager);
         productRecycleView.setHasFixedSize(true);
 
