@@ -1,5 +1,4 @@
 package com.fpt.prm391groupproject.DAO;
-import android.app.ProgressDialog;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -73,7 +72,6 @@ public class ProductDAO {
     }
 
     public void getListProductsFilter(OnCompleteListener<QuerySnapshot> onCompleteListener, String name, String category){
-
         if (category.equals("All")&&name.equals("")){
             this.getListProducts(onCompleteListener);
         }
