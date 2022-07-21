@@ -47,11 +47,11 @@ public class UserDAO {
         user.put(Constants.FireBaseUserTable.userAddress,u.getAddress());
         user.put(Constants.FireBaseUserTable.userAge,u.getAge());
         user.put(Constants.FireBaseUserTable.userId,u.getUserId());
-
-        table.add(u)
+        table.add(user)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
+                        userSQLiteDAO.addUser(u);
                         Log.d("TAG", "DocumentSnapshot added with ID: " + documentReference.getId());
                     }
                 })

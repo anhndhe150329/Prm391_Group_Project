@@ -39,6 +39,14 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 ")";
         sqLiteDatabase.execSQL(CREATE_CATEGORY_TABLE);
         sqLiteDatabase.execSQL(CREATE_USER_TABLE);
+        sqLiteDatabase.execSQL("CREATE TABLE Cart (\n" +
+                "  UserId nvarchar(30),\n" +
+                "  ProductId nvarchar(30),\n" +
+                "  Image nvarchar(100),\n" +
+                "  ProductName nvarchar(30),\n" +
+                "  Price int,\n" +
+                "  Quantity int\n" +
+                ")");
     }
 
     @Override
@@ -48,6 +56,15 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             sqLiteDatabase.execSQL(DROP_TABLE);
             sqLiteDatabase.execSQL(CREATE_TABLE);
             sqLiteDatabase.execSQL(CREATE_USER_TABLE);
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS Cart");
+            sqLiteDatabase.execSQL("CREATE TABLE Cart (\n" +
+                    "  UserId nvarchar(30),\n" +
+                    "  ProductId nvarchar(30),\n" +
+                    "  Image nvarchar(100),\n" +
+                    "  ProductName nvarchar(30),\n" +
+                    "  Price int,\n" +
+                    "  Quantity int\n" +
+                    ")");
         }
     }
 }
