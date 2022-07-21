@@ -45,10 +45,6 @@ public class HomeFragment extends Fragment {
 
     private final String DEFAULT_CATEGORY_FILTER = "All";
     private String filterCategory;
-    private String filterName;
-
-    Button btnSearch;
-    EditText edtSearch;
 
     ProductDAO productDAO;
     CategorySQLiteDAO categoryDAO;
@@ -60,27 +56,14 @@ public class HomeFragment extends Fragment {
 
         filterCategory = DEFAULT_CATEGORY_FILTER;
 
-        btnSearch = view.findViewById(R.id.btn_search);
-
-        edtSearch = view.findViewById(R.id.search_text);
-        filterName = edtSearch.getText().toString();
-        btnSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getListProductFilter(edtSearch.getText().toString(),filterCategory);
-            }
-        });
-
         bindingDropDown(view);
         categoryAdapter = new CategoryAdapter(getContext(),R.layout.item_selected,getListCategory());
         spinnerCategory.setAdapter(categoryAdapter);
         spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getContext(),categoryAdapter.getItem(i).getName(),Toast.LENGTH_SHORT).show();
                 filterCategory = categoryAdapter.getItem(i).getName();
-                filterName = edtSearch.getText().toString();
-                getListProductFilter(filterName,filterCategory);
+                getListProductFilter(filterCategory);
             }
 
             @Override
@@ -95,7 +78,6 @@ public class HomeFragment extends Fragment {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3, GridLayoutManager.VERTICAL, false);
         productRecycleView.setLayoutManager(gridLayoutManager);
         productRecycleView.setHasFixedSize(true);
-        //getListProductFilter(filterName,filterCategory);
 
         categoryDAO = new CategorySQLiteDAO(getContext());
         return view;
@@ -115,8 +97,8 @@ public class HomeFragment extends Fragment {
         spinnerCategory = view.findViewById(R.id.spinner_category);
     }
 
-    private void getListProductFilter(String name, String category){
-        productDAO.getListProductsFilter(new GetAllProductsOnCompleteListener(),name,category);
+    private void getListProductFilter( String category){
+        productDAO.getListProductsFilter(new GetAllProductsOnCompleteListener(),category);
     }
 
     private void bindingView(View view) {

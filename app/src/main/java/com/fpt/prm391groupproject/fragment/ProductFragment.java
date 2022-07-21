@@ -14,13 +14,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.fpt.prm391groupproject.DAO.CartDAO;
 import com.fpt.prm391groupproject.DAO.ProductDAO;
 import com.fpt.prm391groupproject.ProductAdapter;
 import com.fpt.prm391groupproject.R;
 import com.fpt.prm391groupproject.Utils.Constants;
+import com.fpt.prm391groupproject.model.Cart;
 import com.fpt.prm391groupproject.model.Product;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -38,12 +41,16 @@ public class ProductFragment extends Fragment {
     Button bt_btn_cart;
     View view;
 
+    FirebaseAuth auth;
+    Product thisProduct;
+
     private String product_id;
     private ProductDAO dao;
 
     public ProductFragment(String product_id) {
         this.product_id = product_id;
         dao = new ProductDAO();
+        auth = FirebaseAuth.getInstance();
     }
 
     @Nullable
@@ -58,6 +65,27 @@ public class ProductFragment extends Fragment {
         tv_p_price = view.findViewById(R.id.p_price);
         bt_btn_cart = view.findViewById(R.id.btn_cart);
         dao.getProductById(new GetProductByIdOnCompleteListener(),product_id);
+
+        bt_btn_cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String id =product_id;
+                CartDAO cd = new CartDAO(view.getContext());
+                Cart c = new Cart();
+                c.setProductId(id);
+                c.setUserId(auth.getCurrentUser().getUid());
+                c.setProductName(tv_p_name.getText().toString());
+//                c.setImage(products.get(getAdapterPosition()).getImage());
+//                c.setPrice(products.get(getAdapterPosition()).getPrice());
+                c.setQuantity(1);
+                if(cd.GetById(c.getUserId(),c.getProductId())==null){
+                    cd.addToCart(c);
+                }else {
+                    cd.updateCart(c);
+                }
+            }
+        });
+
         return view;
     }
 
