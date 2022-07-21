@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.fpt.prm391groupproject.DAO.ProductDAO;
 import com.fpt.prm391groupproject.DAO.UserSQLiteDAO;
+import com.fpt.prm391groupproject.fragment.ChangePasswordFragment;
 import com.fpt.prm391groupproject.fragment.CartFragment;
 import com.fpt.prm391groupproject.fragment.HomeFragment;
 import com.fpt.prm391groupproject.fragment.OrderFragment;
@@ -53,6 +54,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private static final int FRAGMENT_HISTORY = 3;
     private static final int FRAGMENT_WALLET = 4;
     private static final int FRAGMENT_PRODUCT = 5;
+    private static final int FRAGMENT_CHANGEPASS = 6;
+
 
     private int currentFragment = FRAGMENT_HOME;
 
@@ -143,6 +146,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             case R.id.nav_change_pass:
+                if (currentFragment != FRAGMENT_CHANGEPASS){
+                    replaceFragment(new ChangePasswordFragment());
+                    currentFragment = FRAGMENT_CHANGEPASS;
+                }
                 break;
             case  R.id.nav_login:
                 startActivity(new Intent(getApplicationContext(),LoginActivity.class));

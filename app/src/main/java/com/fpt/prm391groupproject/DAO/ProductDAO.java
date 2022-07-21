@@ -71,19 +71,16 @@ public class ProductDAO {
         documentReference.delete();
     }
 
-    public void getListProductsFilter(OnCompleteListener<QuerySnapshot> onCompleteListener, String name, String category){
-        if (category.equals("All")&&name.equals("")){
+    public void getListProductsFilter(OnCompleteListener<QuerySnapshot> onCompleteListener,  String category){
+        if (category.equals("All")){
             this.getListProducts(onCompleteListener);
         }
         else{
             table
-//                    .whereGreaterThanOrEqualTo(Constants.FireBaseProductTable.productName,name)
-//                    .whereLessThanOrEqualTo(Constants.FireBaseProductTable.productName,name+'\uf8ff')
                     .whereEqualTo(Constants.FireBaseProductTable.productCategory,category)
                     .get()
                     .addOnCompleteListener(onCompleteListener );
         }
-
     }
 
     public void getListProducts(OnCompleteListener<QuerySnapshot> onCompleteListener){
