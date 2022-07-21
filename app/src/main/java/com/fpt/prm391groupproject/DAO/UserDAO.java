@@ -12,6 +12,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -45,11 +47,11 @@ public class UserDAO {
         user.put(Constants.FireBaseUserTable.userAddress,u.getAddress());
         user.put(Constants.FireBaseUserTable.userAge,u.getAge());
         user.put(Constants.FireBaseUserTable.userId,u.getUserId());
-
-        table.add(u)
+        table.add(user)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
+                        userSQLiteDAO.addUser(u);
                         Log.d("TAG", "DocumentSnapshot added with ID: " + documentReference.getId());
                     }
                 })
@@ -61,20 +63,27 @@ public class UserDAO {
                 });
     }
 
-    public void updateProduct(Product p) {
-        String id = p.getId();
-        DocumentReference documentReference = table.document(id);
-        documentReference.set(p);
-    }
+    public void updateUser(User p) {
+        String id = p.getUserId();
+        table.whereEqualTo(Constants.FireBaseUserTable.userId,id)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            String docId="";
+                            for (QueryDocumentSnapshot document:task.getResult()){
+                                docId=document.getId();
+                            }
+                           table.document(docId).set(p);
+                        }
+                    }
+                });
 
-    public void deleteProduct(String id) {
-        DocumentReference documentReference = table.document(id);
-        documentReference.delete();
     }
 
     public void getLoginUser( String id){
-        table
-                .whereEqualTo(Constants.FireBaseUserTable.userId,id)
+        table.whereEqualTo(Constants.FireBaseUserTable.userId,id)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
