@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
-    private EditText etName,etEmail,etPassword,etRePassword,etPhone;
+    private EditText etName,etEmail,etPassword,etRePassword,etPhone,etAge,etAddress;
     private Button btRegister;
     private TextView tvLoginhere;
     private FirebaseAuth auth;
@@ -51,6 +51,8 @@ public class RegisterActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.etPassword);
         etRePassword = findViewById(R.id.etRepassword);
         etPhone = findViewById(R.id.etPhone);
+        etAge = findViewById(R.id.etAge);
+        etAddress = findViewById(R.id.etAddress);
         tvLoginhere = findViewById(R.id.tvLoginhere);
 
         btRegister = findViewById(R.id.btLogin);
@@ -71,8 +73,8 @@ public class RegisterActivity extends AppCompatActivity {
                 String repass = etRePassword.getText().toString().trim();
                 String fullname = etName.getText().toString().trim();
                 String phone = etPhone.getText().toString().trim();
-                int age = 0;
-                String address = "Hoa Lac";
+                int age = Integer.parseInt(etAge.getText().toString().trim());
+                String address = etAddress.getText().toString().trim();
                 if (TextUtils.isEmpty(email)){
                     etEmail.setError("Email required");
                     return;
@@ -87,6 +89,18 @@ public class RegisterActivity extends AppCompatActivity {
                 }
                 if(!repass.equals(passs)){
                     etRePassword.setError("RePassword didn't match");
+                    return;
+                }
+                if(TextUtils.isEmpty(phone)){
+                    etPhone.setError("Phone required");
+                    return;
+                }
+                if(age < 15){
+                    etAge.setError("You are not old enough to register");
+                    return;
+                }
+                if(TextUtils.isEmpty(address)){
+                    etAddress.setError("Address required");
                     return;
                 }
                 auth.createUserWithEmailAndPassword(email, passs).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
