@@ -13,6 +13,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fpt.prm391groupproject.DAO.UserDAO;
+import com.fpt.prm391groupproject.DAO.UserSQLiteDAO;
+import com.fpt.prm391groupproject.Utils.Constants;
+import com.fpt.prm391groupproject.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -32,10 +36,15 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseFirestore firestore;
     private String userId;
+
+    private UserDAO userDAO;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        userDAO = new UserDAO(this);
 
         etName = findViewById(R.id.etName);
         etEmail = findViewById(R.id.etEmail);
@@ -50,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
         firestore = FirebaseFirestore.getInstance();
 
         if(auth.getCurrentUser() != null){
-            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+            startActivity(new Intent(getApplicationContext(),HomeActivity.class));
             finish();
         }
 
@@ -62,6 +71,8 @@ public class RegisterActivity extends AppCompatActivity {
                 String repass = etRePassword.getText().toString().trim();
                 String fullname = etName.getText().toString().trim();
                 String phone = etPhone.getText().toString().trim();
+                int age = 0;
+                String address = "Hoa Lac";
                 if (TextUtils.isEmpty(email)){
                     etEmail.setError("Email required");
                     return;
@@ -81,25 +92,10 @@ public class RegisterActivity extends AppCompatActivity {
                 auth.createUserWithEmailAndPassword(email, passs).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        String userId = auth.getUid();
                         if (task.isSuccessful()) {
-                            Map<String,Object> user = new HashMap<>();
-                            user.put("name",fullname);
-                            user.put("email",email);
-                            user.put("phone",phone);
-                            firestore.collection("users").add(user)
-                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                        @Override
-                                        public void onSuccess(DocumentReference documentReference) {
-                                            Log.w("TAG", "Success adding user with id: "+documentReference.getId());
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.w("TAG", "Error adding document:"+e.toString());
-                                        }
-                                    });
-                            Toast.makeText(RegisterActivity.this, "Success.",
-                                    Toast.LENGTH_SHORT).show();
+                            User u = new User(userId,email,fullname,phone,address,age);
+                            userDAO.addUser(u);
                             Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
                             startActivity(intent);
 

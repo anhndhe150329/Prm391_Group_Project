@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fpt.prm391groupproject.DAO.UserDAO;
+import com.fpt.prm391groupproject.DAO.UserSQLiteDAO;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,6 +25,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
+    UserDAO userDAO;
+
     private EditText etEmail,etPassword;
     private Button btLogin;
     private FirebaseAuth auth;
@@ -33,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        userDAO = new UserDAO(this);
         progressDialog  = new ProgressDialog(this);
         tvRegisterhere = findViewById(R.id.tvLoginhere);
         tvForgot = findViewById(R.id.tvForgot);
@@ -66,10 +71,8 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Toast.makeText(LoginActivity.this, "Login Success.",Toast.LENGTH_SHORT).show();
+                            userDAO.getLoginUser(auth.getCurrentUser().getUid());
                             Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putInt("isLogin",1);
-                            intent.putExtra("data",bundle);
                             startActivity(intent);
 
                         } else {
