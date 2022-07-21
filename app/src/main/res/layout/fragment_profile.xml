@@ -15,35 +15,35 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/txtName"
         android:layout_width="match_parent"
         android:layout_height="76dp"
         android:text="TextView"
         android:textSize="30dp" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/txtEmail"
         android:layout_width="match_parent"
         android:layout_height="42dp"
         android:text="TextView"
         android:textSize="20dp" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/txtPhone"
         android:layout_width="match_parent"
         android:layout_height="41dp"
         android:text="TextView"
         android:textSize="20dp" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/txtAge"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:text="TextView"
         android:textSize="20dp" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/txtAddress"
         android:layout_width="match_parent"
         android:layout_height="53dp"
         android:text="TextView"
