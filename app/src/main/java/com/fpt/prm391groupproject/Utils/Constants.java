@@ -38,4 +38,11 @@ public class Constants {
         public static final String id = "id";
         public static final String name = "name";
     }
+
+    public static class FireBaseWalletTable{
+        public static final String dbName = "Wallet";
+        public static final String userId = "UserId";
+        public static final String money = "Money";
+        public static final String point = "Point";
+    }
 }

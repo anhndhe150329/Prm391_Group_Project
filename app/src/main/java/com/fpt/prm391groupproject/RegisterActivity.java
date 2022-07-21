@@ -15,8 +15,10 @@ import android.widget.Toast;
 
 import com.fpt.prm391groupproject.DAO.UserDAO;
 import com.fpt.prm391groupproject.DAO.UserSQLiteDAO;
+import com.fpt.prm391groupproject.DAO.WalletDAO;
 import com.fpt.prm391groupproject.Utils.Constants;
 import com.fpt.prm391groupproject.model.User;
+import com.fpt.prm391groupproject.model.Wallet;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,6 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
     private String userId;
 
     private UserDAO userDAO;
+    private WalletDAO walletDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         userDAO = new UserDAO(this);
+        walletDAO = new WalletDAO(this);
 
         etName = findViewById(R.id.etName);
         etEmail = findViewById(R.id.etEmail);
@@ -95,7 +99,9 @@ public class RegisterActivity extends AppCompatActivity {
                         String userId = auth.getUid();
                         if (task.isSuccessful()) {
                             User u = new User(userId,email,fullname,phone,address,age);
+                            Wallet w = new Wallet(userId,0,100);
                             userDAO.addUser(u);
+                            walletDAO.addWallet(w);
                             Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
                             startActivity(intent);
 
