@@ -32,6 +32,7 @@ import com.fpt.prm391groupproject.fragment.CartFragment;
 import com.fpt.prm391groupproject.fragment.HomeFragment;
 import com.fpt.prm391groupproject.fragment.OrderFragment;
 import com.fpt.prm391groupproject.fragment.ProfileFragment;
+import com.fpt.prm391groupproject.fragment.WalletFragment;
 import com.fpt.prm391groupproject.model.Product;
 import com.fpt.prm391groupproject.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -141,7 +142,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_wallet:
                 checkIdLogin();
                 if (currentFragment != FRAGMENT_WALLET){
-                    //replaceFragment(new HistoryFragment());
+                    replaceFragment(new WalletFragment());
                     currentFragment = FRAGMENT_WALLET;
                 }
                 break;
