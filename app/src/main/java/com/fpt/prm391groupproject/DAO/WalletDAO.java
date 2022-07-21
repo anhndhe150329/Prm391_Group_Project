@@ -82,12 +82,6 @@ public class WalletDAO {
                 });
     }
 
-    public void updateProduct(Product p) {
-        String id = p.getId();
-        DocumentReference documentReference = table.document(id);
-        documentReference.set(p);
-    }
-
     public void getUserWallet(OnCompleteListener<QuerySnapshot> onCompleteListener, String userId){
             table
                 .whereEqualTo(Constants.FireBaseWalletTable.userId,userId)

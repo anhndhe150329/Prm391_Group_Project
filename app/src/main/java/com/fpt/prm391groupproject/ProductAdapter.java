@@ -87,6 +87,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                     }else {
                         cd.updateCart(c);
                     }
+                    Toast.makeText(view.getContext(),"Add 1 "+c.getProductName()+" to Cart",Toast.LENGTH_SHORT).show();
                 }
             });
 
