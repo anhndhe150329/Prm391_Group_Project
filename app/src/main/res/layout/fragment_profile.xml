@@ -9,48 +9,48 @@
     android:background="@color/cardview_light_background">
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="371dp"
-        android:layout_height="318dp"
+        android:id="@+id/imageProfile"
+        android:layout_width="370dp"
+        android:layout_height="222dp"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/txtName"
         android:layout_width="match_parent"
-        android:layout_height="76dp"
+        android:layout_height="wrap_content"
         android:text="TextView"
         android:textSize="30dp" />
 
     <TextView
         android:id="@+id/txtEmail"
         android:layout_width="match_parent"
-        android:layout_height="42dp"
+        android:layout_height="wrap_content"
         android:text="TextView"
         android:textSize="20dp" />
 
     <TextView
         android:id="@+id/txtPhone"
         android:layout_width="match_parent"
-        android:layout_height="41dp"
+        android:layout_height="wrap_content"
         android:text="TextView"
         android:textSize="20dp" />
 
     <TextView
         android:id="@+id/txtAge"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
         android:text="TextView"
         android:textSize="20dp" />
 
     <TextView
         android:id="@+id/txtAddress"
         android:layout_width="match_parent"
-        android:layout_height="53dp"
+        android:layout_height="wrap_content"
         android:text="TextView"
         android:textSize="20dp" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btnEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Edit" />
