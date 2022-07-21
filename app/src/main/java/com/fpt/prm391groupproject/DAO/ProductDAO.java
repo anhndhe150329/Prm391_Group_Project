@@ -41,6 +41,9 @@ public class ProductDAO {
         product.put(Constants.FireBaseProductTable.productPrice, p.getPrice());
         product.put(Constants.FireBaseProductTable.productQuantity, p.getQuantity());
         product.put(Constants.FireBaseProductTable.productImage, p.getImage());
+        product.put(Constants.FireBaseProductTable.productCategory,p.getCategoryName());
+        product.put(Constants.FireBaseProductTable.productDescription,p.getDescription());
+        product.put(Constants.FireBaseProductTable.productFavourite,p.isFavourite());
 
         table.add(product)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -68,8 +71,29 @@ public class ProductDAO {
         documentReference.delete();
     }
 
+    public void getListProductsFilter(OnCompleteListener<QuerySnapshot> onCompleteListener, String name, String category){
+        if (category.equals("All")&&name.equals("")){
+            this.getListProducts(onCompleteListener);
+        }
+        else{
+            table
+//                    .whereGreaterThanOrEqualTo(Constants.FireBaseProductTable.productName,name)
+//                    .whereLessThanOrEqualTo(Constants.FireBaseProductTable.productName,name+'\uf8ff')
+                    .whereEqualTo(Constants.FireBaseProductTable.productCategory,category)
+                    .get()
+                    .addOnCompleteListener(onCompleteListener );
+        }
+
+    }
+
     public void getListProducts(OnCompleteListener<QuerySnapshot> onCompleteListener){
         table.get()
                 .addOnCompleteListener(onCompleteListener );
+    }
+
+    public void getProductById(OnCompleteListener<DocumentSnapshot> onCompleteListener, String id){
+        table.document(id)
+                .get()
+                .addOnCompleteListener(onCompleteListener);
     }
 }
