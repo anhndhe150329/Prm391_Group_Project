@@ -12,6 +12,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -51,6 +53,7 @@ public class UserDAO {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d("TAG", "DocumentSnapshot added with ID: " + documentReference.getId());
+                        userSQLiteDAO.addUser(u);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -61,10 +64,24 @@ public class UserDAO {
                 });
     }
 
-    public void updateProduct(Product p) {
-        String id = p.getId();
-        DocumentReference documentReference = table.document(id);
-        documentReference.set(p);
+    public void updateUser(User p) {
+        String id = p.getUserId();
+        table.whereEqualTo(Constants.FireBaseUserTable.userId,id)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            String docId="";
+                            for (QueryDocumentSnapshot document:task.getResult()){
+                                docId=document.getId();
+                            }
+                           table.document(docId).set(p);
+
+                        }
+                    }
+                });
+
     }
 
     public void deleteProduct(String id) {
@@ -73,8 +90,7 @@ public class UserDAO {
     }
 
     public void getLoginUser( String id){
-        table
-                .whereEqualTo(Constants.FireBaseUserTable.userId,id)
+        table.whereEqualTo(Constants.FireBaseUserTable.userId,id)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -89,7 +105,7 @@ public class UserDAO {
                                 u.setPhone(documentData.get(Constants.FireBaseUserTable.userPhone).toString());
                                 u.setAddress(documentData.get(Constants.FireBaseUserTable.userAddress).toString());
                                 u.setAge(Integer.parseInt(documentData.get(Constants.FireBaseUserTable.userAge).toString()));
-                                userSQLiteDAO.addUser(u);
+
                             }
                         }
                     }

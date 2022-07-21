@@ -38,6 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
     private String userId;
 
     private UserDAO userDAO;
+    private UserSQLiteDAO userSqlDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
