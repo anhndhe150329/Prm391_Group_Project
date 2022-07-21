@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.fpt.prm391groupproject.CartAdapter;
 import com.fpt.prm391groupproject.DAO.CartDAO;
 import com.fpt.prm391groupproject.DAO.OrderDAO;
+import com.fpt.prm391groupproject.DAO.WalletDAO;
 import com.fpt.prm391groupproject.R;
 import com.fpt.prm391groupproject.model.Cart;
 import com.fpt.prm391groupproject.model.Order;
@@ -43,6 +44,7 @@ public class CartFragment extends Fragment {
     private CartAdapter cartAdapter;
     private String UserId;
     private FirebaseAuth auth;
+    private int total;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
@@ -60,6 +62,7 @@ public class CartFragment extends Fragment {
         tv=view.findViewById(R.id.textView3);
         btn=view.findViewById(R.id.button2);
 
+        WalletDAO walletDAO = new WalletDAO(container.getContext());
         CartDAO cd = new CartDAO(container.getContext());
         rv=view.findViewById(R.id.rv_cart);
         lb=cd.getAllCarts("select * from Cart where UserId=?",UserId);
@@ -67,7 +70,7 @@ public class CartFragment extends Fragment {
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         rv.setAdapter(cartAdapter);
         rv.setItemAnimator(new DefaultItemAnimator());
-        int total=0;
+        total=0;
         for(int i=0;i<lb.size();i++){
             total+=lb.get(i).getQuantity()*lb.get(i).getPrice();
         }
@@ -77,6 +80,7 @@ public class CartFragment extends Fragment {
                 OrderDAO od = new OrderDAO();
                 od.addOrder(new Order(UserId,"", Calendar.getInstance().getTime().toString()),lb);
                 cd.Delete(UserId);
+                walletDAO.changeMoneyAndPoint(-total,total/10+1, auth.getCurrentUser().getUid());
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.content_frame,new HomeFragment());
                 transaction.commit();

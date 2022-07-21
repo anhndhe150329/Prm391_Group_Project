@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import com.fpt.prm391groupproject.DAO.WalletDAO;
 import com.fpt.prm391groupproject.R;
 import com.fpt.prm391groupproject.Utils.Constants;
+import com.fpt.prm391groupproject.model.Wallet;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,7 +41,7 @@ public class WalletFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_wallet,container,false);
         money = "0";
-        point = "0";
+        point = "100";
         walletDAO = new WalletDAO(view.getContext());
         firebaseAuth = FirebaseAuth.getInstance();
         t_txt_money = view.findViewById(R.id.txt_money);
@@ -83,11 +84,17 @@ public class WalletFragment extends Fragment {
         @Override
         public void onComplete(@NonNull Task<QuerySnapshot> task) {
             if (task.isSuccessful()) {
+                int count =0;
                 for (QueryDocumentSnapshot document : task.getResult()) {
+                    count++;
                     Map<String, Object> documentData = document.getData();
                     money = documentData.get(Constants.FireBaseWalletTable.money).toString();
                     point = documentData.get(Constants.FireBaseWalletTable.point).toString();
                 }
+                if (count ==0){
+                    walletDAO.addWallet(new Wallet(firebaseAuth.getCurrentUser().getUid(),0,100));
+                }
+
                 t_txt_money.setText(money);
                 t_txt_point.setText(point);
             }
